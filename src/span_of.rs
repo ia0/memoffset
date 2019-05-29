@@ -114,7 +114,7 @@ macro_rules! span_of {
         start..(start + $crate::size_of(&$root.$($begin)+))
     });
     (@helper $root:ident, $(# $begin:tt)+ [] $tt:tt $($rest:tt)*) => {
-        span_of!(@helper $root, $(#$begin)* #$tt [] $($rest)*)
+        span_of!(@helper $root, $(#$begin)+ #$tt [] $($rest)*)
     };
     (@helper $root:ident, [] $tt:tt $($rest:tt)*) => {
         span_of!(@helper $root, #$tt [] $($rest)*)
@@ -122,7 +122,7 @@ macro_rules! span_of {
 
     ($parent:ty, $($exp:tt)+) => (unsafe {
         let root: &'static $parent = $crate::Transmuter::<$parent> { int: 0 }.ptr;
-        span_of!(@helper root, [] $($exp)*)
+        span_of!(@helper root, [] $($exp)+)
     });
 }
 
